@@ -21,7 +21,7 @@ body {
     font-family: 'Inter', sans-serif;
     height: 100vh;
     width: 100vw;
-    overflow: hidden; /* Removes main body scrolling */
+    overflow: hidden; /* Removes all body scrolling */
 }
 
 /* --- SLIDE CONTAINER --- */
@@ -29,27 +29,14 @@ body {
     background-color: #f8fafc; 
     height: 100vh;
     width: 100%;
-    padding: 4% 6%; /* Reduced padding to give more vertical space */
+    padding: 3% 5%; /* Reduced padding for maximum inner space */
     position: absolute;
     top: 0;
     left: 0;
-    overflow-y: auto; /* Added so it scrolls internally if screen is too small */
-    overflow-x: hidden;
+    overflow: hidden; /* Strictly no scrolling allowed */
     color: #1e293b;
     display: none; /* Hide all slides by default */
     flex-direction: column;
-}
-
-/* Custom Scrollbar for slides if they overflow */
-.slide-container::-webkit-scrollbar {
-    width: 8px;
-}
-.slide-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-.slide-container::-webkit-scrollbar-thumb {
-    background-color: #cbd5e1;
-    border-radius: 10px;
 }
 
 /* Class to show the active slide */
@@ -72,79 +59,78 @@ body {
 .slide-container > * { position: relative; z-index: 1; }
 
 /* --- TYPOGRAPHY --- */
-h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: #0f172a; line-height: 1.2; }
-p, li, .subtitle { font-family: 'Inter', sans-serif; color: #334155; line-height: 1.5; }
+h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: #0f172a; line-height: 1.2; word-wrap: break-word; overflow-wrap: break-word; }
+p, li, .subtitle { font-family: 'Inter', sans-serif; color: #334155; line-height: 1.4; word-wrap: break-word; overflow-wrap: break-word; max-width: 100%; box-sizing: border-box; }
 a { color: #0ea5e9; text-decoration: none; font-weight: 600; transition: color 0.3s ease; }
 a:hover { color: #0284c7; text-decoration: underline; }
 
-/* Adjusted font sizes slightly down for better fitting */
-.slide-container h1 { font-size: 5vw; font-weight: 700; letter-spacing: -1px; margin-bottom: 2vh; }
-.slide-container .slide-title { font-size: 3.2vw; font-weight: 600; margin-bottom: 2.5vh; text-align: left; width: 100%; color: #0f172a; border-bottom: 5px solid #0ea5e9; padding-bottom: 1vh; display: inline-block; }
-.slide-container h3 { font-size: 2vw; font-weight: 600; margin-bottom: 1.5vh; color: #0284c7; }
-.slide-container p { font-size: 1.8vw; margin-bottom: 1.5vh; }
-.slide-container .subtitle { font-size: 2vw; font-weight: 500; color: #475569; }
+/* Adjusted font sizes to perfectly fit 100vh without scrolling */
+.slide-container h1 { font-size: 4vw; font-weight: 700; letter-spacing: -1px; margin-bottom: 1.5vh; }
+.slide-container .slide-title { font-size: 2.8vw; font-weight: 600; margin-bottom: 2vh; text-align: left; width: 100%; color: #0f172a; border-bottom: 4px solid #0ea5e9; padding-bottom: 0.5vh; display: inline-block; }
+.slide-container h3 { font-size: 1.8vw; font-weight: 600; margin-bottom: 1vh; color: #0284c7; }
+.slide-container p { font-size: 1.5vw; margin-bottom: 1vh; }
+.slide-container .subtitle { font-size: 1.8vw; font-weight: 500; color: #475569; }
 
 .content-area { display: flex; flex-direction: column; flex-grow: 1; width: 100%; justify-content: center; }
 
 /* --- LAYOUTS --- */
 .title-layout { text-align: left; display: flex; flex-direction: column; justify-content: center; height: 100%; max-width: 80vw; }
-.title-layout .speaker-info { margin-top: 5vh; border-left: 8px solid #0ea5e9; padding-left: 2vw; }
-.title-layout .speaker-info p { font-size: 1.8vw; margin-bottom: 0.5vh; color: #0f172a; font-weight: 600; }
-.title-layout .speaker-info .university { font-size: 1.5vw; font-weight: 400; color: #475569; }
+.title-layout .speaker-info { margin-top: 4vh; border-left: 6px solid #0ea5e9; padding-left: 2vw; }
+.title-layout .speaker-info p.name { font-size: 1.8vw; margin-bottom: 0.2vh; color: #0f172a; font-weight: 700; }
+.title-layout .speaker-info p.designation { font-size: 1.4vw; font-weight: 600; color: #0284c7; margin-bottom: 0.5vh; }
+.title-layout .speaker-info p.university { font-size: 1.3vw; font-weight: 400; color: #475569; }
 
 .section-title-layout { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; text-align: center; width: 100%; }
-.section-title-layout h2 { font-size: 4vw; margin-bottom: 2vh; }
-.section-title-layout p { font-size: 2vw; max-width: 75vw; }
-.section-title-layout hr { background-color: #0ea5e9; border: none; height: 6px; margin: 3vh auto; width: 15vw; border-radius: 3px; }
+.section-title-layout h2 { font-size: 3.5vw; margin-bottom: 1.5vh; }
+.section-title-layout p { font-size: 1.8vw; max-width: 80vw; }
+.section-title-layout hr { background-color: #0ea5e9; border: none; height: 5px; margin: 2.5vh auto; width: 12vw; border-radius: 3px; }
 
-.two-column { display: flex; gap: 4vw; width: 100%; align-items: flex-start; }
-.two-column > div { flex: 1; }
+.two-column { display: flex; gap: 3vw; width: 100%; align-items: flex-start; }
+.two-column > div { flex: 1; min-width: 0; }
 
-.bullet-list ul { list-style: none; }
-.bullet-list li { font-size: 1.7vw; margin-bottom: 1.8vh; padding-left: 3.5vw; position: relative; }
-/* Applied specific selector for list icons to fix the overlap issue */
-.bullet-list li i { color: #0ea5e9; font-size: 1.8vw; position: absolute; left: 0; top: 0.5vh; }
+.bullet-list ul { list-style: none; width: 100%; }
+.bullet-list li { font-size: 1.4vw; margin-bottom: 1.2vh; padding-left: 2.5vw; padding-right: 1vw; position: relative; width: 100%; }
+.bullet-list li i { color: #0ea5e9; font-size: 1.4vw; position: absolute; left: 0; top: 0.3vh; }
 .bullet-list strong { color: #0f172a; }
 
-/* Fix for Heading Overlap Issue */
-.bullet-list h3 { display: flex; align-items: center; gap: 1vw; margin-bottom: 1.5vh; }
-.bullet-list h3 i { position: static; font-size: 2.2vw; color: #0ea5e9; }
+.bullet-list h3 { display: flex; align-items: center; gap: 0.8vw; margin-bottom: 1vh; }
+.bullet-list h3 i { position: static; font-size: 1.8vw; color: #0ea5e9; }
 
-.tiled-content { display: flex; gap: 2vw; width: 100%; align-items: stretch; flex-wrap: wrap; }
-.tile { background-color: #ffffff; border: 2px solid #cbd5e1; border-radius: 12px; padding: 2.5vh 2vw; flex: 1; display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); min-width: 25%; }
-.tile .icon { font-size: 2.8vw; color: #0ea5e9; margin-bottom: 1vh; text-align: center; }
-.tile h3 { text-align: center; font-size: 1.6vw; }
-.tile p { font-size: 1.3vw; text-align: center; margin-bottom: 0; }
+.tiled-content { display: flex; gap: 1.5vw; width: 100%; align-items: stretch; flex-wrap: wrap; }
+.tile { background-color: #ffffff; border: 2px solid #cbd5e1; border-radius: 10px; padding: 2vh 1.5vw; flex: 1; display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); min-width: 25%; }
+.tile .icon { font-size: 2.2vw; color: #0ea5e9; margin-bottom: 1vh; text-align: center; }
+.tile h3 { text-align: center; font-size: 1.4vw; margin-bottom: 0.5vh; }
+.tile p { font-size: 1.1vw; text-align: center; margin-bottom: 0; }
 
 /* Custom layouts for new content */
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; }
-.contact-card { background: #fff; padding: 2vh 2vw; border-radius: 10px; border-left: 5px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-.contact-card h4 { font-size: 1.6vw; margin-bottom: 1vh; color: #0f172a; }
-.contact-card p { font-size: 1.4vw; margin-bottom: 0.5vh; display: flex; align-items: center; gap: 1vw;}
-.contact-card i { color: #64748b; width: 2vw; text-align: center; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5vw; }
+.contact-card { background: #fff; padding: 1.5vh 1.5vw; border-radius: 8px; border-left: 4px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.contact-card h4 { font-size: 1.4vw; margin-bottom: 0.8vh; color: #0f172a; }
+.contact-card p { font-size: 1.1vw; margin-bottom: 0.4vh; display: flex; align-items: center; gap: 0.8vw;}
+.contact-card i { color: #64748b; width: 1.5vw; text-align: center; }
 
-.step-list { counter-reset: step-counter; list-style: none; padding: 0; }
-.step-list li { position: relative; padding-left: 5vw; margin-bottom: 2.5vh; font-size: 1.6vw; }
-.step-list li::before { content: counter(step-counter); counter-increment: step-counter; position: absolute; left: 0; top: -0.2vh; font-family: 'Poppins', sans-serif; font-size: 2.5vw; font-weight: 700; color: #ffffff; background-color: #0ea5e9; width: 3.5vw; height: 3.5vw; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-.step-list strong { color: #0f172a; display: block; font-size: 1.8vw; margin-bottom: 0.3vh; }
+.step-list { counter-reset: step-counter; list-style: none; padding: 0; width: 100%; overflow-x: hidden; box-sizing: border-box; }
+.step-list li { position: relative; padding-left: 4vw; padding-right: 1vw; margin-bottom: 1.5vh; font-size: 1.3vw; width: 100%; box-sizing: border-box; display: block; }
+.step-list li::before { content: counter(step-counter); counter-increment: step-counter; position: absolute; left: 0; top: -0.1vh; font-family: 'Poppins', sans-serif; font-size: 1.5vw; font-weight: 700; color: #ffffff; background-color: #0ea5e9; width: 2.5vw; height: 2.5vw; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.step-list strong { color: #0f172a; display: block; font-size: 1.5vw; margin-bottom: 0.2vh; word-wrap: break-word; }
 
-.highlight-box { background-color: #eff6ff; border: 2px solid #bfdbfe; border-radius: 12px; padding: 3vh 3vw; text-align: center; margin-top: 1vh; }
-.highlight-box i { font-size: 3.5vw; color: #3b82f6; margin-bottom: 1.5vh; }
-.highlight-box h3 { font-size: 2.2vw; color: #1e3a8a; }
+.highlight-box { background-color: #eff6ff; border: 2px solid #bfdbfe; border-radius: 10px; padding: 2vh 2vw; text-align: center; margin-top: 1vh; }
+.highlight-box i { font-size: 2.5vw; color: #3b82f6; margin-bottom: 1vh; }
+.highlight-box h3 { font-size: 1.8vw; color: #1e3a8a; }
 
 .quote-layout { margin: 0 auto; text-align: center; width: 85%; }
-.quote-layout blockquote { font-family: 'Poppins', sans-serif; font-size: 3.2vw; font-weight: 600; color: #0f172a; line-height: 1.4; margin-bottom: 3vh; position: relative; padding: 0 5vw; }
-.quote-layout blockquote::before, .quote-layout blockquote::after { color: #bae6fd; content: '"'; font-size: 7vw; line-height: 0; position: absolute; }
-.quote-layout blockquote::before { left: -2vw; top: 2vh; }
-.quote-layout blockquote::after { right: -2vw; bottom: -1vh; }
-.quote-layout cite { font-family: 'Inter', sans-serif; font-size: 1.8vw; font-style: normal; color: #475569; font-weight: 500; }
+.quote-layout blockquote { font-family: 'Poppins', sans-serif; font-size: 2.8vw; font-weight: 600; color: #0f172a; line-height: 1.4; margin-bottom: 2.5vh; position: relative; padding: 0 4vw; }
+.quote-layout blockquote::before, .quote-layout blockquote::after { color: #bae6fd; content: '"'; font-size: 6vw; line-height: 0; position: absolute; }
+.quote-layout blockquote::before { left: -1vw; top: 1vh; }
+.quote-layout blockquote::after { right: -1vw; bottom: -1vh; }
+.quote-layout cite { font-family: 'Inter', sans-serif; font-size: 1.5vw; font-style: normal; color: #475569; font-weight: 500; }
 
 .qa-layout { text-align: center; width: 100%; }
-.qa-layout h2 { font-size: 5vw; color: #0ea5e9; margin-bottom: 2vh; }
-.qa-layout p { font-size: 2.2vw; }
-.qa-layout .contact-info { margin-top: 5vh; padding-top: 3vh; border-top: 4px solid #cbd5e1; font-size: 1.8vw; color: #475569; }
+.qa-layout h2 { font-size: 4.5vw; color: #0ea5e9; margin-bottom: 1.5vh; }
+.qa-layout p { font-size: 1.8vw; }
+.qa-layout .contact-info { margin-top: 4vh; padding-top: 2.5vh; border-top: 3px solid #cbd5e1; font-size: 1.5vw; color: #475569; line-height: 1.6; }
 
-.nav-hint { position: fixed; bottom: 2vh; right: 2vw; font-size: 1.2vw; color: #94a3b8; z-index: 10; cursor: pointer; background: rgba(255,255,255,0.7); padding: 0.5vh 1vw; border-radius: 20px; }
+.nav-hint { position: fixed; bottom: 2vh; right: 2vw; font-size: 1vw; color: #94a3b8; z-index: 10; cursor: pointer; background: rgba(255,255,255,0.7); padding: 0.5vh 1vw; border-radius: 20px; }
     </style>
 </head>
 <body>
@@ -156,7 +142,8 @@ a:hover { color: #0284c7; text-decoration: underline; }
         <p class="subtitle">Securing Devices, Combating Scams, & Ethical Tech Use</p>
         
         <div class="speaker-info">
-            <p>Dr. Wasim Ahmad Khan</p>
+            <p class="name">Dr. Wasim Ahmad Khan</p>
+            <p class="designation">Associate Professor | Applied AI Engineer</p>
             <p class="university">Guest Speaker | Dar ul Madina International University</p>
         </div>
     </div>
@@ -378,7 +365,7 @@ a:hover { color: #0284c7; text-decoration: underline; }
                 <li><i class="fa-solid fa-stopwatch"></i> <strong>The 10-Second Rule:</strong> Pause before reacting to or sharing anything emotionally triggering, politically charged, or religiously sensitive.</li>
                 <li><i class="fa-solid fa-circle-check"></i> <strong>Verify the Source:</strong> Distinguish between verified news outlets and anonymous social media or WhatsApp forwards.</li>
                 <li><i class="fa-solid fa-link-slash"></i> <strong>Break the Chain:</strong> Refuse to forward unverified or controversial materials. The spread stops at your screen.</li>
-                <li><i class="fa-solid fa-flag"></i> <strong>Report, Don't Engage:</strong> Use platform tools to report malicious content.</li>
+                <li><i class="fa-solid fa-flag"></i> <strong>Report, Don't Engage:</strong> Use platform tools to report malicious content. Engaging in the comments only boosts the algorithm and spreads the content further.</li>
             </ul>
         </div>
     </div>
@@ -402,8 +389,9 @@ a:hover { color: #0284c7; text-decoration: underline; }
             <h2>Thank You</h2>
             <p>I am now open to your questions.</p>
             <div class="contact-info">
-                Dr. Wasim Ahmad Khan | Guest Speaker<br>
-                Dar ul Madina International University
+                <strong>Dr. Wasim Ahmad Khan</strong><br>
+                Associate Professor | Applied AI Engineer<br>
+                Guest Speaker | Dar ul Madina International University
             </div>
         </div>
     </div>
@@ -457,3 +445,4 @@ a:hover { color: #0284c7; text-decoration: underline; }
 
 </body>
 </html>
+```
