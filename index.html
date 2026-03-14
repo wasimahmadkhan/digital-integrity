@@ -21,7 +21,7 @@ body {
     font-family: 'Inter', sans-serif;
     height: 100vh;
     width: 100vw;
-    overflow: hidden; /* Removes all scrolling (horizontal & vertical) */
+    overflow: hidden; /* Removes main body scrolling */
 }
 
 /* --- SLIDE CONTAINER --- */
@@ -29,14 +29,27 @@ body {
     background-color: #f8fafc; 
     height: 100vh;
     width: 100%;
-    padding: 6% 8%;
+    padding: 4% 6%; /* Reduced padding to give more vertical space */
     position: absolute;
     top: 0;
     left: 0;
-    overflow: hidden;
+    overflow-y: auto; /* Added so it scrolls internally if screen is too small */
+    overflow-x: hidden;
     color: #1e293b;
     display: none; /* Hide all slides by default */
     flex-direction: column;
+}
+
+/* Custom Scrollbar for slides if they overflow */
+.slide-container::-webkit-scrollbar {
+    width: 8px;
+}
+.slide-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.slide-container::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 10px;
 }
 
 /* Class to show the active slide */
@@ -60,77 +73,78 @@ body {
 
 /* --- TYPOGRAPHY --- */
 h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: #0f172a; line-height: 1.2; }
-p, li, .subtitle { font-family: 'Inter', sans-serif; color: #334155; line-height: 1.6; }
+p, li, .subtitle { font-family: 'Inter', sans-serif; color: #334155; line-height: 1.5; }
 a { color: #0ea5e9; text-decoration: none; font-weight: 600; transition: color 0.3s ease; }
 a:hover { color: #0284c7; text-decoration: underline; }
 
-.slide-container h1 { font-size: 5.0vw; font-weight: 700; letter-spacing: -1px; margin-bottom: 2vh; }
-.slide-container .slide-title { font-size: 3.5vw; font-weight: 600; margin-bottom: 4vh; text-align: left; width: 100%; color: #0f172a; border-bottom: 6px solid #0ea5e9; padding-bottom: 1.5vh; display: inline-block; }
-.slide-container h3 { font-size: 2.2vw; font-weight: 600; margin-bottom: 1.5vh; color: #0284c7; }
-.slide-container p { font-size: 2vw; margin-bottom: 2vh; }
-.slide-container .subtitle { font-size: 2.2vw; font-weight: 500; color: #475569; }
+/* Adjusted font sizes slightly down for better fitting */
+.slide-container h1 { font-size: 5vw; font-weight: 700; letter-spacing: -1px; margin-bottom: 2vh; }
+.slide-container .slide-title { font-size: 3.2vw; font-weight: 600; margin-bottom: 2.5vh; text-align: left; width: 100%; color: #0f172a; border-bottom: 5px solid #0ea5e9; padding-bottom: 1vh; display: inline-block; }
+.slide-container h3 { font-size: 2vw; font-weight: 600; margin-bottom: 1.5vh; color: #0284c7; }
+.slide-container p { font-size: 1.8vw; margin-bottom: 1.5vh; }
+.slide-container .subtitle { font-size: 2vw; font-weight: 500; color: #475569; }
 
 .content-area { display: flex; flex-direction: column; flex-grow: 1; width: 100%; justify-content: center; }
 
 /* --- LAYOUTS --- */
 .title-layout { text-align: left; display: flex; flex-direction: column; justify-content: center; height: 100%; max-width: 80vw; }
-.title-layout .speaker-info { margin-top: 6vh; border-left: 8px solid #0ea5e9; padding-left: 2vw; }
-.title-layout .speaker-info p { font-size: 2vw; margin-bottom: 0.5vh; color: #0f172a; font-weight: 600; }
-.title-layout .speaker-info .university { font-size: 1.6vw; font-weight: 400; color: #475569; }
+.title-layout .speaker-info { margin-top: 5vh; border-left: 8px solid #0ea5e9; padding-left: 2vw; }
+.title-layout .speaker-info p { font-size: 1.8vw; margin-bottom: 0.5vh; color: #0f172a; font-weight: 600; }
+.title-layout .speaker-info .university { font-size: 1.5vw; font-weight: 400; color: #475569; }
 
 .section-title-layout { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; text-align: center; width: 100%; }
-.section-title-layout h2 { font-size: 4.5vw; margin-bottom: 3vh; }
-.section-title-layout p { font-size: 2.2vw; max-width: 75vw; }
-.section-title-layout hr { background-color: #0ea5e9; border: none; height: 8px; margin: 4vh auto; width: 15vw; border-radius: 4px; }
+.section-title-layout h2 { font-size: 4vw; margin-bottom: 2vh; }
+.section-title-layout p { font-size: 2vw; max-width: 75vw; }
+.section-title-layout hr { background-color: #0ea5e9; border: none; height: 6px; margin: 3vh auto; width: 15vw; border-radius: 3px; }
 
 .two-column { display: flex; gap: 4vw; width: 100%; align-items: flex-start; }
 .two-column > div { flex: 1; }
 
 .bullet-list ul { list-style: none; }
-.bullet-list li { font-size: 1.8vw; margin-bottom: 2.5vh; padding-left: 3.5vw; position: relative; }
+.bullet-list li { font-size: 1.7vw; margin-bottom: 1.8vh; padding-left: 3.5vw; position: relative; }
 /* Applied specific selector for list icons to fix the overlap issue */
-.bullet-list li i { color: #0ea5e9; font-size: 2vw; position: absolute; left: 0; top: 0.5vh; }
+.bullet-list li i { color: #0ea5e9; font-size: 1.8vw; position: absolute; left: 0; top: 0.5vh; }
 .bullet-list strong { color: #0f172a; }
 
 /* Fix for Heading Overlap Issue */
-.bullet-list h3 { display: flex; align-items: center; gap: 1vw; margin-bottom: 2vh; }
-.bullet-list h3 i { position: static; font-size: 2.5vw; color: #0ea5e9; }
+.bullet-list h3 { display: flex; align-items: center; gap: 1vw; margin-bottom: 1.5vh; }
+.bullet-list h3 i { position: static; font-size: 2.2vw; color: #0ea5e9; }
 
 .tiled-content { display: flex; gap: 2vw; width: 100%; align-items: stretch; flex-wrap: wrap; }
-.tile { background-color: #ffffff; border: 2px solid #cbd5e1; border-radius: 16px; padding: 3vh 2vw; flex: 1; display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); min-width: 25%; }
-.tile .icon { font-size: 3vw; color: #0ea5e9; margin-bottom: 1.5vh; text-align: center; }
-.tile h3 { text-align: center; font-size: 1.8vw; }
-.tile p { font-size: 1.4vw; text-align: center; }
+.tile { background-color: #ffffff; border: 2px solid #cbd5e1; border-radius: 12px; padding: 2.5vh 2vw; flex: 1; display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); min-width: 25%; }
+.tile .icon { font-size: 2.8vw; color: #0ea5e9; margin-bottom: 1vh; text-align: center; }
+.tile h3 { text-align: center; font-size: 1.6vw; }
+.tile p { font-size: 1.3vw; text-align: center; margin-bottom: 0; }
 
 /* Custom layouts for new content */
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; }
-.contact-card { background: #fff; padding: 2.5vh 2vw; border-radius: 12px; border-left: 6px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-.contact-card h4 { font-size: 1.8vw; margin-bottom: 1vh; color: #0f172a; }
-.contact-card p { font-size: 1.5vw; margin-bottom: 0.5vh; display: flex; align-items: center; gap: 1vw;}
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; }
+.contact-card { background: #fff; padding: 2vh 2vw; border-radius: 10px; border-left: 5px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.contact-card h4 { font-size: 1.6vw; margin-bottom: 1vh; color: #0f172a; }
+.contact-card p { font-size: 1.4vw; margin-bottom: 0.5vh; display: flex; align-items: center; gap: 1vw;}
 .contact-card i { color: #64748b; width: 2vw; text-align: center; }
 
 .step-list { counter-reset: step-counter; list-style: none; padding: 0; }
-.step-list li { position: relative; padding-left: 6vw; margin-bottom: 3vh; font-size: 1.8vw; }
-.step-list li::before { content: counter(step-counter); counter-increment: step-counter; position: absolute; left: 0; top: -0.5vh; font-family: 'Poppins', sans-serif; font-size: 3vw; font-weight: 700; color: #ffffff; background-color: #0ea5e9; width: 4.5vw; height: 4.5vw; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-.step-list strong { color: #0f172a; display: block; font-size: 2.2vw; margin-bottom: 0.5vh; }
+.step-list li { position: relative; padding-left: 5vw; margin-bottom: 2.5vh; font-size: 1.6vw; }
+.step-list li::before { content: counter(step-counter); counter-increment: step-counter; position: absolute; left: 0; top: -0.2vh; font-family: 'Poppins', sans-serif; font-size: 2.5vw; font-weight: 700; color: #ffffff; background-color: #0ea5e9; width: 3.5vw; height: 3.5vw; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.step-list strong { color: #0f172a; display: block; font-size: 1.8vw; margin-bottom: 0.3vh; }
 
-.highlight-box { background-color: #eff6ff; border: 2px solid #bfdbfe; border-radius: 16px; padding: 4vh 4vw; text-align: center; margin-top: 2vh; }
-.highlight-box i { font-size: 4vw; color: #3b82f6; margin-bottom: 2vh; }
-.highlight-box h3 { font-size: 2.5vw; color: #1e3a8a; }
+.highlight-box { background-color: #eff6ff; border: 2px solid #bfdbfe; border-radius: 12px; padding: 3vh 3vw; text-align: center; margin-top: 1vh; }
+.highlight-box i { font-size: 3.5vw; color: #3b82f6; margin-bottom: 1.5vh; }
+.highlight-box h3 { font-size: 2.2vw; color: #1e3a8a; }
 
 .quote-layout { margin: 0 auto; text-align: center; width: 85%; }
-.quote-layout blockquote { font-family: 'Poppins', sans-serif; font-size: 3.5vw; font-weight: 600; color: #0f172a; line-height: 1.4; margin-bottom: 4vh; position: relative; padding: 0 5vw; }
-.quote-layout blockquote::before, .quote-layout blockquote::after { color: #bae6fd; content: '"'; font-size: 8vw; line-height: 0; position: absolute; }
-.quote-layout blockquote::before { left: -2vw; top: 3vh; }
+.quote-layout blockquote { font-family: 'Poppins', sans-serif; font-size: 3.2vw; font-weight: 600; color: #0f172a; line-height: 1.4; margin-bottom: 3vh; position: relative; padding: 0 5vw; }
+.quote-layout blockquote::before, .quote-layout blockquote::after { color: #bae6fd; content: '"'; font-size: 7vw; line-height: 0; position: absolute; }
+.quote-layout blockquote::before { left: -2vw; top: 2vh; }
 .quote-layout blockquote::after { right: -2vw; bottom: -1vh; }
-.quote-layout cite { font-family: 'Inter', sans-serif; font-size: 2vw; font-style: normal; color: #475569; font-weight: 500; }
+.quote-layout cite { font-family: 'Inter', sans-serif; font-size: 1.8vw; font-style: normal; color: #475569; font-weight: 500; }
 
 .qa-layout { text-align: center; width: 100%; }
-.qa-layout h2 { font-size: 6vw; color: #0ea5e9; margin-bottom: 2vh; }
-.qa-layout p { font-size: 2.5vw; }
-.qa-layout .contact-info { margin-top: 6vh; padding-top: 4vh; border-top: 4px solid #cbd5e1; font-size: 2vw; color: #475569; }
+.qa-layout h2 { font-size: 5vw; color: #0ea5e9; margin-bottom: 2vh; }
+.qa-layout p { font-size: 2.2vw; }
+.qa-layout .contact-info { margin-top: 5vh; padding-top: 3vh; border-top: 4px solid #cbd5e1; font-size: 1.8vw; color: #475569; }
 
-.nav-hint { position: absolute; bottom: 2vh; right: 2vw; font-size: 1.2vw; color: #94a3b8; z-index: 10; cursor: pointer; }
+.nav-hint { position: fixed; bottom: 2vh; right: 2vw; font-size: 1.2vw; color: #94a3b8; z-index: 10; cursor: pointer; background: rgba(255,255,255,0.7); padding: 0.5vh 1vw; border-radius: 20px; }
     </style>
 </head>
 <body>
@@ -143,7 +157,7 @@ a:hover { color: #0284c7; text-decoration: underline; }
         
         <div class="speaker-info">
             <p>Dr. Wasim Ahmad Khan</p>
-            <p class="university">Associate Professor | Applied AI Engineer</p>
+            <p class="university">Guest Speaker | Dar ul Madina International University</p>
         </div>
     </div>
     <div class="nav-hint">Use arrow keys, space, or click to navigate</div>
@@ -240,7 +254,7 @@ a:hover { color: #0284c7; text-decoration: underline; }
             </div>
             <div class="contact-card">
                 <h4><i class="fa-solid fa-location-dot"></i> Postal Address (Islamabad)</h4>
-                <p style="font-size: 1.3vw; line-height: 1.4;"><i class="fa-solid fa-building"></i> Director NR3C-FIA, National Police Foundation Building, 2nd Floor, G-10/4, Mauve Area, Islamabad.</p>
+                <p style="font-size: 1.2vw; line-height: 1.4;"><i class="fa-solid fa-building"></i> Director NR3C-FIA, National Police Foundation Building, 2nd Floor, G-10/4, Mauve Area, Islamabad.</p>
             </div>
         </div>
     </div>
@@ -309,9 +323,9 @@ a:hover { color: #0284c7; text-decoration: underline; }
         <div class="highlight-box">
             <i class="fa-solid fa-building-user"></i>
             <h3>Fast-Track Your Complaint</h3>
-            <p style="font-size: 2vw; margin-top: 2vh; color: #334155;">For immediate action, bypass the 8–10 day email delay by visiting the <strong>FIA Cybercrime Reporting Center (CRC) in Lahore</strong> in person.</p>
+            <p style="font-size: 1.8vw; margin-top: 1vh; color: #334155;">For immediate action, bypass the 8–10 day email delay by visiting the <strong>FIA Cybercrime Reporting Center (CRC) in Lahore</strong> in person.</p>
             <br>
-            <p style="font-size: 1.8vw; color: #475569;"><strong>Requirement:</strong> Bring your Original CNIC and printed hard copies of all digital evidence (screenshots, bank statements, messages).</p>
+            <p style="font-size: 1.6vw; color: #475569;"><strong>Requirement:</strong> Bring your Original CNIC and printed hard copies of all digital evidence (screenshots, bank statements, messages).</p>
         </div>
     </div>
 </div>
@@ -358,7 +372,7 @@ a:hover { color: #0284c7; text-decoration: underline; }
 <div class="slide-container" id="slide12">
     <h2 class="slide-title">Curbing Controversial & Blasphemous Content</h2>
     <div class="content-area">
-        <p style="font-size: 2.2vw; margin-bottom: 4vh;">As educated individuals, we bear the primary responsibility of maintaining the sanctity of our digital spaces and upholding religious and social values.</p>
+        <p style="font-size: 2vw; margin-bottom: 2vh;">As educated individuals, we bear the primary responsibility of maintaining the sanctity of our digital spaces and upholding religious and social values.</p>
         <div class="bullet-list">
             <ul>
                 <li><i class="fa-solid fa-stopwatch"></i> <strong>The 10-Second Rule:</strong> Pause before reacting to or sharing anything emotionally triggering, politically charged, or religiously sensitive.</li>
@@ -388,8 +402,8 @@ a:hover { color: #0284c7; text-decoration: underline; }
             <h2>Thank You</h2>
             <p>I am now open to your questions.</p>
             <div class="contact-info">
-                Dr. Wasim Ahmad Khan | Associate Professor<br>
-                Applied AI Engineer
+                Dr. Wasim Ahmad Khan | Guest Speaker<br>
+                Dar ul Madina International University
             </div>
         </div>
     </div>
@@ -411,14 +425,22 @@ a:hover { color: #0284c7; text-decoration: underline; }
         // Add active class to current slide
         slides[index].classList.add('active');
         currentSlide = index;
+        
+        // Scroll to top of the slide when it becomes active
+        slides[index].scrollTop = 0;
     }
 
     // Keyboard navigation (Arrow keys and Spacebar)
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+        // Only trigger next slide if we are at the bottom of the current slide's scroll
+        const activeSlide = slides[currentSlide];
+        const isAtBottom = Math.abs(activeSlide.scrollHeight - activeSlide.scrollTop - activeSlide.clientHeight) < 2;
+        const isAtTop = activeSlide.scrollTop === 0;
+
+        if ((e.key === 'ArrowRight' || e.key === ' ' || (e.key === 'ArrowDown' && isAtBottom))) {
             e.preventDefault();
             showSlide(currentSlide + 1);
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        } else if ((e.key === 'ArrowLeft' || (e.key === 'ArrowUp' && isAtTop))) {
             e.preventDefault();
             showSlide(currentSlide - 1);
         }
