@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Integrity in the Age of AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+/* --- CORE SETUP & RESET --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #0f172a; 
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* Removes all scrolling (horizontal & vertical) */
+}
+
+/* --- SLIDE CONTAINER --- */
+.slide-container {
+    background-color: #f8fafc; 
+    height: 100vh;
+    width: 100%;
+    padding: 6% 8%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    color: #1e293b;
+    display: none; /* Hide all slides by default */
+    flex-direction: column;
+}
+
+/* Class to show the active slide */
+.slide-container.active {
+    display: flex;
+}
+
+.slide-container::before {
+    content: ''; position: absolute; top: -20vh; right: -10vw; width: 80vh; height: 80vh;
+    background: radial-gradient(circle, rgba(2, 132, 199, 0.08) 0%, rgba(248, 250, 252, 0) 70%);
+    border-radius: 50%; z-index: 0; pointer-events: none;
+}
+
+.slide-container::after {
+    content: ''; position: absolute; bottom: -30vh; left: -10vw; width: 70vh; height: 70vh;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.06) 0%, rgba(248, 250, 252, 0) 70%);
+    border-radius: 50%; z-index: 0; pointer-events: none;
+}
+
+.slide-container > * { position: relative; z-index: 1; }
+
+/* --- TYPOGRAPHY --- */
+h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: #0f172a; line-height: 1.2; }
+p, li, .subtitle { font-family: 'Inter', sans-serif; color: #334155; line-height: 1.6; }
+a { color: #0ea5e9; text-decoration: none; font-weight: 600; transition: color 0.3s ease; }
+a:hover { color: #0284c7; text-decoration: underline; }
+
+.slide-container h1 { font-size: 5.0vw; font-weight: 700; letter-spacing: -1px; margin-bottom: 2vh; }
+.slide-container .slide-title { font-size: 3.5vw; font-weight: 600; margin-bottom: 4vh; text-align: left; width: 100%; color: #0f172a; border-bottom: 6px solid #0ea5e9; padding-bottom: 1.5vh; display: inline-block; }
+.slide-container h3 { font-size: 2.2vw; font-weight: 600; margin-bottom: 1.5vh; color: #0284c7; }
+.slide-container p { font-size: 2vw; margin-bottom: 2vh; }
+.slide-container .subtitle { font-size: 2.2vw; font-weight: 500; color: #475569; }
+
+.content-area { display: flex; flex-direction: column; flex-grow: 1; width: 100%; justify-content: center; }
+
+/* --- LAYOUTS --- */
+.title-layout { text-align: left; display: flex; flex-direction: column; justify-content: center; height: 100%; max-width: 80vw; }
+.title-layout .speaker-info { margin-top: 6vh; border-left: 8px solid #0ea5e9; padding-left: 2vw; }
+.title-layout .speaker-info p { font-size: 2vw; margin-bottom: 0.5vh; color: #0f172a; font-weight: 600; }
+.title-layout .speaker-info .university { font-size: 1.6vw; font-weight: 400; color: #475569; }
+
+.section-title-layout { align-items: center; display: flex; flex-direction: column; height: 100%; justify-content: center; text-align: center; width: 100%; }
+.section-title-layout h2 { font-size: 4.5vw; margin-bottom: 3vh; }
+.section-title-layout p { font-size: 2.2vw; max-width: 75vw; }
+.section-title-layout hr { background-color: #0ea5e9; border: none; height: 8px; margin: 4vh auto; width: 15vw; border-radius: 4px; }
+
+.two-column { display: flex; gap: 4vw; width: 100%; align-items: flex-start; }
+.two-column > div { flex: 1; }
+
+.bullet-list ul { list-style: none; }
+.bullet-list li { font-size: 1.8vw; margin-bottom: 2.5vh; padding-left: 3.5vw; position: relative; }
+/* Applied specific selector for list icons to fix the overlap issue */
+.bullet-list li i { color: #0ea5e9; font-size: 2vw; position: absolute; left: 0; top: 0.5vh; }
+.bullet-list strong { color: #0f172a; }
+
+/* Fix for Heading Overlap Issue */
+.bullet-list h3 { display: flex; align-items: center; gap: 1vw; margin-bottom: 2vh; }
+.bullet-list h3 i { position: static; font-size: 2.5vw; color: #0ea5e9; }
+
+.tiled-content { display: flex; gap: 2vw; width: 100%; align-items: stretch; flex-wrap: wrap; }
+.tile { background-color: #ffffff; border: 2px solid #cbd5e1; border-radius: 16px; padding: 3vh 2vw; flex: 1; display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); min-width: 25%; }
+.tile .icon { font-size: 3vw; color: #0ea5e9; margin-bottom: 1.5vh; text-align: center; }
+.tile h3 { text-align: center; font-size: 1.8vw; }
+.tile p { font-size: 1.4vw; text-align: center; }
+
+/* Custom layouts for new content */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; }
+.contact-card { background: #fff; padding: 2.5vh 2vw; border-radius: 12px; border-left: 6px solid #0ea5e9; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.contact-card h4 { font-size: 1.8vw; margin-bottom: 1vh; color: #0f172a; }
+.contact-card p { font-size: 1.5vw; margin-bottom: 0.5vh; display: flex; align-items: center; gap: 1vw;}
+.contact-card i { color: #64748b; width: 2vw; text-align: center; }
+
+.step-list { counter-reset: step-counter; list-style: none; padding: 0; }
+.step-list li { position: relative; padding-left: 6vw; margin-bottom: 3vh; font-size: 1.8vw; }
+.step-list li::before { content: counter(step-counter); counter-increment: step-counter; position: absolute; left: 0; top: -0.5vh; font-family: 'Poppins', sans-serif; font-size: 3vw; font-weight: 700; color: #ffffff; background-color: #0ea5e9; width: 4.5vw; height: 4.5vw; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.step-list strong { color: #0f172a; display: block; font-size: 2.2vw; margin-bottom: 0.5vh; }
+
+.highlight-box { background-color: #eff6ff; border: 2px solid #bfdbfe; border-radius: 16px; padding: 4vh 4vw; text-align: center; margin-top: 2vh; }
+.highlight-box i { font-size: 4vw; color: #3b82f6; margin-bottom: 2vh; }
+.highlight-box h3 { font-size: 2.5vw; color: #1e3a8a; }
+
+.quote-layout { margin: 0 auto; text-align: center; width: 85%; }
+.quote-layout blockquote { font-family: 'Poppins', sans-serif; font-size: 3.5vw; font-weight: 600; color: #0f172a; line-height: 1.4; margin-bottom: 4vh; position: relative; padding: 0 5vw; }
+.quote-layout blockquote::before, .quote-layout blockquote::after { color: #bae6fd; content: '"'; font-size: 8vw; line-height: 0; position: absolute; }
+.quote-layout blockquote::before { left: -2vw; top: 3vh; }
+.quote-layout blockquote::after { right: -2vw; bottom: -1vh; }
+.quote-layout cite { font-family: 'Inter', sans-serif; font-size: 2vw; font-style: normal; color: #475569; font-weight: 500; }
+
+.qa-layout { text-align: center; width: 100%; }
+.qa-layout h2 { font-size: 6vw; color: #0ea5e9; margin-bottom: 2vh; }
+.qa-layout p { font-size: 2.5vw; }
+.qa-layout .contact-info { margin-top: 6vh; padding-top: 4vh; border-top: 4px solid #cbd5e1; font-size: 2vw; color: #475569; }
+
+.nav-hint { position: absolute; bottom: 2vh; right: 2vw; font-size: 1.2vw; color: #94a3b8; z-index: 10; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Title Slide -->
+<div class="slide-container active" id="slide1">
+    <div class="title-layout">
+        <h1>Digital Integrity in the Age of AI</h1>
+        <p class="subtitle">Securing Devices, Combating Scams, & Ethical Tech Use</p>
+        
+        <div class="speaker-info">
+            <p>Dr. Wasim Ahmad Khan</p>
+            <p class="university">Associate Professor | Applied AI Engineer</p>
+        </div>
+    </div>
+    <div class="nav-hint">Use arrow keys, space, or click to navigate</div>
+</div>
+
+<!-- Slide 2: Section Title -->
+<div class="slide-container" id="slide2">
+    <div class="section-title-layout">
+        <h2>The Reality of Our Connected World</h2>
+        <hr>
+        <p>We live in an era where our physical and digital lives are inseparable. With constant connectivity, the threats to our privacy, our data, and our core values have multiplied exponentially.</p>
+    </div>
+</div>
+
+<!-- Slide 3: Practical Security Steps -->
+<div class="slide-container" id="slide3">
+    <h2 class="slide-title">Practical Guide: Securing Your Devices</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div class="bullet-list">
+                <h3><i class="fa-solid fa-mobile-screen"></i> Device & App Security</h3>
+                <ul>
+                    <li><i class="fa-solid fa-fingerprint"></i> <strong>Biometric Locks:</strong> Always use Fingerprint, FaceID, or a strong PIN. Never leave your phone unlocked unattended.</li>
+                    <li><i class="fa-solid fa-download"></i> <strong>App Permissions:</strong> Don't give microphone, camera, or contact access to basic apps (like a flashlight or calculator app).</li>
+                    <li><i class="fa-brands fa-whatsapp"></i> <strong>WhatsApp Security:</strong> Enable "Two-Step Verification" in WhatsApp settings today to prevent account hijacking.</li>
+                </ul>
+            </div>
+            <div class="bullet-list">
+                <h3><i class="fa-solid fa-network-wired"></i> Network & Account Security</h3>
+                <ul>
+                    <li><i class="fa-solid fa-wifi"></i> <strong>Public Wi-Fi Danger:</strong> Never use free campus or cafe Wi-Fi for banking apps, emails, or entering sensitive passwords.</li>
+                    <li><i class="fa-solid fa-shield-halved"></i> <strong>2FA is Mandatory:</strong> Enable Two-Factor Authentication on all academic, social, and financial accounts.</li>
+                    <li><i class="fa-solid fa-clock-rotate-left"></i> <strong>Consistent Updates:</strong> Keep your OS and apps updated to patch known security vulnerabilities.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: Navigating Digital Scams -->
+<div class="slide-container" id="slide4">
+    <h2 class="slide-title">Practical Guide: Spotting & Avoiding Scams</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div class="bullet-list">
+                <h3><i class="fa-solid fa-triangle-exclamation"></i> Common Tactics</h3>
+                <ul>
+                    <li><i class="fa-solid fa-comment-sms"></i> <strong>Malicious Links:</strong> Messages claiming "Your bank account is blocked" or "BISP Funds arrived" are phishing traps. Never click.</li>
+                    <li><i class="fa-solid fa-user-secret"></i> <strong>Fabricated Urgency:</strong> Scammers create panic (e.g., "Send money, your relative is in the hospital"). Hang up and verify directly.</li>
+                </ul>
+            </div>
+            <div class="bullet-list">
+                <h3><i class="fa-solid fa-shield-cat"></i> Core Defenses</h3>
+                <ul>
+                    <li><i class="fa-solid fa-key"></i> <strong>The OTP Rule:</strong> No official bank, FIA agency, or university will <strong>ever</strong> call and ask for your OTP (One Time Password).</li>
+                    <li><i class="fa-solid fa-microphone-lines-slash"></i> <strong>AI Voice Cloning:</strong> Be aware that voices can now be faked. Establish a "safe word" with family for financial emergencies.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 5: Section Title - Cybercrime in Pakistan -->
+<div class="slide-container" id="slide5">
+    <div class="section-title-layout">
+        <h2>Reporting Cyber Crime in Pakistan</h2>
+        <hr>
+        <p>Under the <strong>Prevention of Electronic Crimes Act (PECA) 2016</strong>, the FIA Cyber Crime Wing (CCW) is the primary authority to combat online fraud, harassment, and blackmailing.</p>
+    </div>
+</div>
+
+<!-- Slide 6: Official Channels & Links -->
+<div class="slide-container" id="slide6">
+    <h2 class="slide-title">Key Contacts & Official Portals</h2>
+    <div class="content-area">
+        <div class="contact-grid">
+            <div class="contact-card">
+                <h4><i class="fa-solid fa-phone-volume"></i> Emergency Helplines</h4>
+                <p><i class="fa-solid fa-phone"></i> <strong>FIA CCW:</strong> <a href="tel:1991">1991</a> (Weekdays, 8 AM – 4 PM)</p>
+                <p><i class="fa-solid fa-phone"></i> <strong>FIA HQ:</strong> <a href="tel:051111345786">051-111-345-786</a></p>
+                <p><i class="fa-solid fa-phone"></i> <strong>NCCIA:</strong> <a href="tel:1799">1799</a></p>
+                <p><i class="fa-solid fa-phone"></i> <strong>NR3C Direct:</strong> <a href="tel:0519106384">051-9106384</a></p>
+            </div>
+            <div class="contact-card">
+                <h4><i class="fa-solid fa-laptop-code"></i> Official Web Portals</h4>
+                <p><i class="fa-solid fa-globe"></i> <strong>FIA Complaint Portal:</strong> <br><a href="https://complaint.fia.gov.pk" target="_blank">complaint.fia.gov.pk</a></p>
+                <p><i class="fa-solid fa-globe"></i> <strong>NR3C Portal:</strong> <br><a href="http://www.nr3c.gov.pk/creport.php" target="_blank">nr3c.gov.pk/creport</a></p>
+            </div>
+            <div class="contact-card">
+                <h4><i class="fa-solid fa-envelope-open-text"></i> Support Emails</h4>
+                <p><i class="fa-solid fa-envelope"></i> <a href="mailto:helpdesk.cyber@fia.gov.pk">helpdesk.cyber@fia.gov.pk</a></p>
+                <p><i class="fa-solid fa-envelope"></i> <a href="mailto:helpdesk@nr3c.gov.pk">helpdesk@nr3c.gov.pk</a></p>
+                <p><i class="fa-solid fa-envelope"></i> <a href="mailto:helpdesk@nccia.gov.pk">helpdesk@nccia.gov.pk</a></p>
+            </div>
+            <div class="contact-card">
+                <h4><i class="fa-solid fa-location-dot"></i> Postal Address (Islamabad)</h4>
+                <p style="font-size: 1.3vw; line-height: 1.4;"><i class="fa-solid fa-building"></i> Director NR3C-FIA, National Police Foundation Building, 2nd Floor, G-10/4, Mauve Area, Islamabad.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Step by step filing process -->
+<div class="slide-container" id="slide7">
+    <h2 class="slide-title">Step-by-Step Complaint Filing Process</h2>
+    <div class="content-area">
+        <ul class="step-list">
+            <li>
+                <strong>Gather Evidence</strong>
+                Compile all screenshots, malicious URLs, transaction details, contact numbers, and emails of the suspect before filing.
+            </li>
+            <li>
+                <strong>Choose a Reporting Method</strong>
+                Select the most accessible method: Online portal, official email, phone call, or a walk-in visit to a center.
+            </li>
+            <li>
+                <strong>Fill in Complaint Details</strong>
+                Provide accurate information: Full name, CNIC, address, contact number, occupation, and a detailed description of the incident.
+            </li>
+            <li>
+                <strong>Submit and Save Complaint ID</strong>
+                Upon submission, you will receive an acknowledgment via SMS or email containing a unique reference number. Keep it safe.
+            </li>
+            <li>
+                <strong>Follow Up</strong>
+                Call 1991 or reply to the email thread using your reference number to track the progress of your case.
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Slide 8: Scope and Post-filing -->
+<div class="slide-container" id="slide8">
+    <h2 class="slide-title">Scope of Cybercrime & Investigation</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div class="bullet-list">
+                <h3>Crimes You Can Report</h3>
+                <ul>
+                    <li><i class="fa-solid fa-money-bill-transfer"></i> Online fraud & financial scams</li>
+                    <li><i class="fa-solid fa-user-ninja"></i> Hacking & identity theft</li>
+                    <li><i class="fa-solid fa-masks-theater"></i> Online harassment & cyberbullying</li>
+                    <li><i class="fa-solid fa-camera-rotate"></i> Blackmail & non-consensual image sharing</li>
+                    <li><i class="fa-brands fa-facebook"></i> Social media account hacking</li>
+                </ul>
+            </div>
+            <div class="bullet-list">
+                <h3>What Happens After Filing?</h3>
+                <ul>
+                    <li><i class="fa-solid fa-magnifying-glass"></i> <strong>Verification:</strong> Initial check takes 12–14 days.</li>
+                    <li><i class="fa-solid fa-file-shield"></i> <strong>Investigation:</strong> Authority has 90 days to trace suspects via ISPs and tech companies.</li>
+                    <li><i class="fa-solid fa-gavel"></i> <strong>Action:</strong> If valid, an FIR is registered. Penalties under PECA range from up to PKR 1 Million fine to 3–10 years imprisonment.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: Lahore Specific Advice -->
+<div class="slide-container" id="slide9">
+    <h2 class="slide-title">Special Guidance for Lahore Residents</h2>
+    <div class="content-area">
+        <div class="highlight-box">
+            <i class="fa-solid fa-building-user"></i>
+            <h3>Fast-Track Your Complaint</h3>
+            <p style="font-size: 2vw; margin-top: 2vh; color: #334155;">For immediate action, bypass the 8–10 day email delay by visiting the <strong>FIA Cybercrime Reporting Center (CRC) in Lahore</strong> in person.</p>
+            <br>
+            <p style="font-size: 1.8vw; color: #475569;"><strong>Requirement:</strong> Bring your Original CNIC and printed hard copies of all digital evidence (screenshots, bank statements, messages).</p>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Tiled Icons - AI Side Effects -->
+<div class="slide-container" id="slide10">
+    <h2 class="slide-title">The Side Effects of Artificial Intelligence</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-masks-theater"></i></div>
+                <h3>Deepfakes & Manipulation</h3>
+                <p>Highly realistic, fabricated audio and video designed to deceive the public, clone voices, or defame individuals.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-newspaper"></i></div>
+                <h3>Misinformation</h3>
+                <p>AI models can "hallucinate" facts, enabling the generation of completely fake news and academic citations at an industrial scale.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-users-rays"></i></div>
+                <h3>Echo Chambers</h3>
+                <p>Social algorithms trap users in ideological bubbles, reinforcing bias, restricting diverse thought, and polarizing academic discourse.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 11: AI Responsibly -->
+<div class="slide-container" id="slide11">
+    <h2 class="slide-title">Using AI Responsibly in Academia</h2>
+    <div class="content-area">
+        <div class="bullet-list">
+            <ul>
+                <li><i class="fa-solid fa-brain"></i> <strong>A Co-Pilot, Not a Replacement:</strong> Use AI to brainstorm ideas and structure research, not to write your final assignments.</li>
+                <li><i class="fa-solid fa-magnifying-glass-check"></i> <strong>Always Verify Output:</strong> Cross-check all AI-generated facts and citations with trusted academic sources and journals.</li>
+                <li><i class="fa-solid fa-lock"></i> <strong>Guard Institutional Data:</strong> Never paste sensitive university information, unpublished research, or personal data into public AI chatbots.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 12: Controversial Content -->
+<div class="slide-container" id="slide12">
+    <h2 class="slide-title">Curbing Controversial & Blasphemous Content</h2>
+    <div class="content-area">
+        <p style="font-size: 2.2vw; margin-bottom: 4vh;">As educated individuals, we bear the primary responsibility of maintaining the sanctity of our digital spaces and upholding religious and social values.</p>
+        <div class="bullet-list">
+            <ul>
+                <li><i class="fa-solid fa-stopwatch"></i> <strong>The 10-Second Rule:</strong> Pause before reacting to or sharing anything emotionally triggering, politically charged, or religiously sensitive.</li>
+                <li><i class="fa-solid fa-circle-check"></i> <strong>Verify the Source:</strong> Distinguish between verified news outlets and anonymous social media or WhatsApp forwards.</li>
+                <li><i class="fa-solid fa-link-slash"></i> <strong>Break the Chain:</strong> Refuse to forward unverified or controversial materials. The spread stops at your screen.</li>
+                <li><i class="fa-solid fa-flag"></i> <strong>Report, Don't Engage:</strong> Use platform tools to report malicious content. Engaging in the comments only boosts the algorithm and spreads the content further.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 13: Quote -->
+<div class="slide-container" id="slide13">
+    <h2 class="slide-title">A Final Thought</h2>
+    <div class="content-area">
+        <div class="quote-layout">
+            <blockquote>Technology is a useful servant but a dangerous master. Our challenge is to ensure we guide it with wisdom, ethics, and critical thought.</blockquote>
+            <cite>— Adapted for the Digital Age</cite>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 14: Q&A -->
+<div class="slide-container" id="slide14">
+    <div class="content-area">
+        <div class="qa-layout">
+            <h2>Thank You</h2>
+            <p>I am now open to your questions.</p>
+            <div class="contact-info">
+                Dr. Wasim Ahmad Khan | Associate Professor<br>
+                Applied AI Engineer
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JS Logic for standard slide presentation navigation
+    const slides = document.querySelectorAll('.slide-container');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+        // Prevent going out of bounds
+        if (index < 0) index = 0;
+        if (index >= slides.length) index = slides.length - 1;
+
+        // Remove active class from all slides
+        slides.forEach(slide => slide.classList.remove('active'));
+        
+        // Add active class to current slide
+        slides[index].classList.add('active');
+        currentSlide = index;
+    }
+
+    // Keyboard navigation (Arrow keys and Spacebar)
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+            e.preventDefault();
+            showSlide(currentSlide + 1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            showSlide(currentSlide - 1);
+        }
+    });
+
+    // Mouse click navigation (left click anywhere on screen goes to next slide)
+    document.addEventListener('click', function(e) {
+        // Do not advance slide if clicking on a link
+        if(e.target.tagName !== 'A' && !e.target.closest('a')) {
+            showSlide(currentSlide + 1);
+        }
+    });
+</script>
+
+</body>
+</html>
